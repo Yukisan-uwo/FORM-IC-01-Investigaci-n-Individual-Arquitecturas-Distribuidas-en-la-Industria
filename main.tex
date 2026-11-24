@@ -1,0 +1,65 @@
+% FORM-IC-01
+% Aplicaciones Distribuidas - UTEQ
+
+\documentclass[11pt,a4paper]{article}
+
+% Idioma y codificación
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+
+% Tipografía
+\usepackage{newtxtext,newtxmath}
+
+% Configuración de página
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+
+% Figuras y tablas
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{tabularx}
+
+% Formato de títulos
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\large\bfseries}
+  {\thesection.}{0.5em}{}
+
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+
+% Referencias bibliográficas IEEE
+\usepackage{csquotes}
+\usepackage[
+    backend=biber,
+    style=ieee,
+    sorting=none
+]{biblatex}
+
+\addbibresource{referencias.bib}
+
+% Enlaces
+\usepackage[hidelinks]{hyperref}
+
+% Formato de párrafos
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\singlespacing
+
+\begin{document}
+
+% Carátula institucional
+\input{secciones/portada}
+
+% Análisis del caso
+\setcounter{page}{1}
+\input{secciones/analisis}
+
+% Referencias
+\clearpage
+\printbibliography[title={Referencias}]
+
+\end{document}
