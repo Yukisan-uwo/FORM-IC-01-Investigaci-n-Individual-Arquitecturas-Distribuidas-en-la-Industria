@@ -22,4 +22,4 @@
 
 ### Tiempo dedicado
 
-[Completar con el tiempo real dedicado].
+4 horas.
