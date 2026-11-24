@@ -1,20 +1,42 @@
 \section{Descripción del caso}
 
-% Empresa, sistema, arquitectura y escala.
+DoorDash, empresa dedicada a los servicios de pedidos y entregas a domicilio, desarrolló Iguazu, una plataforma distribuida basada en la arquitectura orientada a eventos (EDA). Utiliza Apache Kafka para la publicación y distribución de eventos generados por sus aplicaciones y microservicios, mientras que Apache Flink se encarga del procesamiento de los flujos de datos en tiempo real. En 2022, la plataforma procesaba cientos de miles de millones de eventos diarios \cite{wang2022iguazu}.
 
 \section{Decisión arquitectónica}
 
-% Arquitectura anterior y razones de la transición.
+Anteriormente, DoorDash utilizaba canalizaciones independientes que transportaban datos desde su aplicación monolítica hasta Snowflake. Cada canalización procesaba un único tipo de evento y atravesaba varios intermediarios, lo que incrementaba la latencia, los costos y la complejidad operativa \cite{wang2022iguazu}. La adopción de EDA permitió unificar la publicación de eventos y facilitar su consumo por distintos servicios. Este enfoque coincide con lo expuesto por Laigner et al. \cite{laigner2026events}, quienes relacionan la comunicación asíncrona con la reducción del acoplamiento entre microservicios.
 
 \section{Beneficios obtenidos}
 
-% Resultados medibles respaldados por las fuentes.
+Los principales resultados reportados por DoorDash tras la implementación de Iguazu se presentan en la Tabla~\ref{tab:resultados}.
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados de la implementación de Iguazu}
+    \label{tab:resultados}
+    \small
+    \begin{tabularx}{\textwidth}{X l}
+        \toprule
+        \textbf{Indicador} & \textbf{Resultado} \\
+        \midrule
+        Tasa de entrega de eventos & 99,99\,\% \\
+        Reducción de CPU del broker & 30--40\,\% \\
+        Incorporación de eventos & De días a minutos \\
+        \bottomrule
+    \end{tabularx}
+
+    \vspace{2pt}
+    {\footnotesize Fuente: elaboración propia a partir
+    de \cite{wang2022iguazu}.}
+\end{table}
+
+Estos resultados reflejan un mejor aprovechamiento de los recursos computacionales y una reducción del esfuerzo operativo necesario para incorporar nuevos eventos a la plataforma.
+
 
 \section{Desafíos y soluciones}
 
-% Problemas técnicos y mecanismos de solución.
+Uno de los desafíos fue mantener la compatibilidad de los eventos entre productores y consumidores. DoorDash integró la validación de esquemas Protobuf en sus procesos de CI/CD para detectar cambios incompatibles antes del despliegue \cite{wang2022iguazu}, abordando así uno de los problemas identificados por Laigner et al. \cite{laigner2026events}. También ajustó la replicación y las confirmaciones de escritura en Kafka para mejorar el rendimiento de los eventos no transaccionales. Esta decisión supone un compromiso entre rendimiento y durabilidad, dado que reducir las garantías de escritura puede aumentar el riesgo de pérdida de información ante fallos.
 
 \section{Aplicación al Proyecto Fin de Curso}
 
-% Elementos aplicables al SGRA, limitaciones
-% y justificación de las decisiones.
+En el Sistema de Gestión de Refuerzo Académico (SGRA), se propone utilizar EDA para desacoplar el registro de solicitudes de refuerzo del envío de notificaciones. Un intermediario de mensajes como RabbitMQ permitiría distribuir eventos a los servicios interesados sin depender de respuestas inmediatas. Se incorporarían identificadores únicos, validación de mensajes y mecanismos de reintento. No se adoptaría inicialmente Apache Flink ni una infraestructura Kafka de gran escala, considerando que Henning y Hasselbring \cite{henning2024scalability} evidencian que la elección tecnológica influye en los recursos necesarios y los costos operativos. Asimismo, se mantendrían las garantías de integridad en las operaciones académicas críticas.
