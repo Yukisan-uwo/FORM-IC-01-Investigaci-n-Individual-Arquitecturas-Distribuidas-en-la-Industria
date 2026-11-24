@@ -1,0 +1,26 @@
+# Archivos auxiliares de LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Archivos auxiliares de BibLaTeX y Biber
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+# Archivos temporales
+*.bak
+*.tmp
+*~
+
+# Configuración local
+.vscode/
+.DS_Store
+Thumbs.db
